@@ -79,17 +79,14 @@
         #named-entity-buttons .btn.program,
         #named-entity-buttons .btn.content_type,
         #named-entity-buttons .btn.genre,
-        #named-entity-buttons .btn.theme {
+        #named-entity-buttons .btn.theme,
+        #named-entity-buttons .btn.country,
+        #named-entity-buttons .btn.time_expression {
             background-color: #e8eaed;
         }
         #named-entity-buttons .btn.people_name,
         #named-entity-buttons .btn.people_role {
             background-color: #ffcfc9;
-        }
-        #named-entity-buttons .btn.channel,
-        #named-entity-buttons .btn.country,
-        #named-entity-buttons .btn.time_expression {
-            background-color: #e8eaed;
         }
         #named-entity-buttons .btn.OTT_name,
         #named-entity-buttons .btn.season_order,
@@ -98,7 +95,9 @@
         }
         #named-entity-buttons .btn.sports_type,
         #named-entity-buttons .btn.sports_team,
-        #named-entity-buttons .btn.sports_league {
+        #named-entity-buttons .btn.sports_league,
+        #named-entity-buttons .btn.youtube_search_query,
+        #named-entity-buttons .btn.channel {
             background-color: #d4edbc;
         }
         #named-entity-buttons .btn.sort_type,
@@ -109,14 +108,17 @@
             background-color: #bfe1f6;
         }
         #named-entity-buttons .btn.running_time,
-        #named-entity-buttons .btn.awards,
-        #named-entity-buttons .btn.attendance {
+        #named-entity-buttons .btn.attendance,
+        #named-entity-buttons .btn.theater_showing,
+        #named-entity-buttons .btn.is_original,
+        #named-entity-buttons .btn.is_concluded,
+        #named-entity-buttons .btn.awards {
             background-color: #e6cff2;
         }
         #named-entity-buttons .btn.select_number,
         #named-entity-buttons .btn.btv_function_name,
         #named-entity-buttons .btn.keywords {
-            background-color: #e8eaed;
+            background-color: #c6dbe1;
         }
 
         textarea {
@@ -183,13 +185,11 @@
         <button id="content_type" class="btn content_type" onclick="selectNamedEntity('content_type')">content_type</button>
         <button id="genre" class="btn genre" onclick="selectNamedEntity('genre')">genre</button>
         <button id="theme" class="btn theme" onclick="selectNamedEntity('theme')">theme</button>
+        <button id="country" class="btn country" onclick="selectNamedEntity('country')">country</button>
+        <button id="time_expression" class="btn time_expression" onclick="selectNamedEntity('time_expression')">time_expression</button>
 
         <button id="people_name" class="btn people_name" onclick="selectNamedEntity('people_name')">people_name</button>
         <button id="people_role" class="btn people_role" onclick="selectNamedEntity('people_role')">people_role</button>
-
-        <button id="channel" class="btn channel" onclick="selectNamedEntity('channel')">channel</button>
-        <button id="country" class="btn country" onclick="selectNamedEntity('country')">country</button>
-        <button id="time_expression" class="btn time_expression" onclick="selectNamedEntity('time_expression')">time_expression</button>
 
         <button id="OTT_name" class="btn OTT_name" onclick="selectNamedEntity('OTT_name')">OTT_name</button>
         <button id="season_order" class="btn season_order" onclick="selectNamedEntity('season_order')">season_order</button>
@@ -198,6 +198,8 @@
         <button id="sports_type" class="btn sports_type" onclick="selectNamedEntity('sports_type')">sports_type</button>
         <button id="sports_team" class="btn sports_team" onclick="selectNamedEntity('sports_team')">sports_team</button>
         <button id="sports_league" class="btn sports_league" onclick="selectNamedEntity('sports_league')">sports_league</button>
+        <button id="youtube_search_query" class="btn youtube_search_query" onclick="selectNamedEntity('youtube_search_query')">youtube_search_query</button>
+        <button id="channel" class="btn channel" onclick="selectNamedEntity('channel')">channel</button>
 
         <button id="sort_type" class="btn sort_type" onclick="selectNamedEntity('sort_type')">sort_type</button>
         <button id="star_rate" class="btn star_rate" onclick="selectNamedEntity('star_rate')">star_rate</button>
@@ -208,6 +210,9 @@
         <button id="running_time" class="btn running_time" onclick="selectNamedEntity('running_time')">running_time</button>
         <button id="awards" class="btn awards" onclick="selectNamedEntity('awards')">awards</button>
         <button id="attendance" class="btn attendance" onclick="selectNamedEntity('attendance')">attendance</button>
+        <button id="theater_showing" class="btn theater_showing" onclick="selectNamedEntity('is_concluded')">theater_showing</button>
+        <button id="is_original" class="btn is_original" onclick="selectNamedEntity('is_concluded')">is_original</button>
+        <button id="is_concluded" class="btn is_concluded" onclick="selectNamedEntity('is_concluded')">awards</button>
 
         <button id="select_number" class="btn select_number" onclick="selectNamedEntity('select_number')">select_number</button>
         <button id="btv_function_name" class="btn btv_function_name" onclick="selectNamedEntity('btv_function_name')">btv_function_name</button>
