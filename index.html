@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Generator</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .btn {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 5px 10px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .selected {
+            outline: 2px solid red; /* 빨간색 아웃라인 설정 */
+        }
+
+        /* Intent 버튼 색상 설정 */
+        #intent-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+        #intent-buttons .btn {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        #intent-buttons .btn.search_contents,
+        #intent-buttons .btn.search_contents_info,
+        #intent-buttons .btn.modify_search {
+            background-color: #e8eaed;
+        }
+        #intent-buttons .btn.recommend_theme,
+        #intent-buttons .btn.recommend_similar,
+        #intent-buttons .btn.ranking_chart {
+            background-color: #ffe5a0;
+        }
+        #intent-buttons .btn.search_sports,
+        #intent-buttons .btn.search_youtube,
+        #intent-buttons .btn.search_channel,
+        #intent-buttons .btn.set_channel,
+        #intent-buttons .btn.popular_channel {
+            background-color: #d4edbc;
+        }
+        #intent-buttons .btn.new_contents,
+        #intent-buttons .btn.sort_recent,
+        #intent-buttons .btn.sort_popular,
+        #intent-buttons .btn.sort_star_rate {
+            background-color: #bfe1f6;
+        }
+        #intent-buttons .btn.select_contents_number,
+        #intent-buttons .btn.upcoming_release,
+        #intent-buttons .btn.box_office_contents {
+            background-color: #e6cff2;
+        }
+        #intent-buttons .btn.other_contents,
+        #intent-buttons .btn.play_music,
+        #intent-buttons .btn.btv_functions,
+        #intent-buttons .btn.close_agent,
+        #intent-buttons .btn.free_talk,
+        #intent-buttons .btn.not_support {
+            background-color: #c6dbe1;
+        }
+
+        /* Named Entity 버튼 색상 설정 */
+        #named-entity-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+        #named-entity-buttons .btn {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        #named-entity-buttons .btn.title,
+        #named-entity-buttons .btn.program,
+        #named-entity-buttons .btn.content_type,
+        #named-entity-buttons .btn.genre,
+        #named-entity-buttons .btn.theme {
+            background-color: #e8eaed;
+        }
+        #named-entity-buttons .btn.people_name,
+        #named-entity-buttons .btn.people_role {
+            background-color: #ffcfc9;
+        }
+        #named-entity-buttons .btn.channel,
+        #named-entity-buttons .btn.country,
+        #named-entity-buttons .btn.time_expression {
+            background-color: #e8eaed;
+        }
+        #named-entity-buttons .btn.OTT_name,
+        #named-entity-buttons .btn.season_order,
+        #named-entity-buttons .btn.episode_order {
+            background-color: #ffe5a0;
+        }
+        #named-entity-buttons .btn.sports_type,
+        #named-entity-buttons .btn.sports_team,
+        #named-entity-buttons .btn.sports_league {
+            background-color: #d4edbc;
+        }
+        #named-entity-buttons .btn.sort_type,
+        #named-entity-buttons .btn.star_rate,
+        #named-entity-buttons .btn.age_rating,
+        #named-entity-buttons .btn.day_of_week,
+        #named-entity-buttons .btn.price {
+            background-color: #bfe1f6;
+        }
+        #named-entity-buttons .btn.running_time,
+        #named-entity-buttons .btn.awards,
+        #named-entity-buttons .btn.attendance {
+            background-color: #e6cff2;
+        }
+        #named-entity-buttons .btn.select_number,
+        #named-entity-buttons .btn.btv_function_name,
+        #named-entity-buttons .btn.keywords {
+            background-color: #e8eaed;
+        }
+
+        textarea {
+            width: 90%;
+            height: 50px;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            white-space: pre-wrap; /* Preserve formatting with line breaks */
+            font-family: 'Courier New', Courier, monospace; /* Monospace font for consistent spacing */
+        }
+
+        .action-btn {
+            background-color: #ff0000; /* 빨간색 배경 */
+            color: #fff; /* 흰색 글자색 */
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h3>JSON Generator</h3>
+
+    <h4>Intent</h4>
+    <div id="intent-buttons">
+        <button id="search_contents" class="btn search_contents" onclick="selectIntent('search_contents')">search_contents</button>
+        <button id="search_contents_info" class="btn search_contents_info" onclick="selectIntent('search_contents_info')">search_contents_info</button>
+        <button id="modify_search" class="btn modify_search" onclick="selectIntent('modify_search')">modify_search</button>
+        <button id="recommend_theme" class="btn recommend_theme" onclick="selectIntent('recommend_theme')">recommend_theme</button>
+        <button id="recommend_similar" class="btn recommend_similar" onclick="selectIntent('recommend_similar')">recommend_similar</button>
+        <button id="ranking_chart" class="btn ranking_chart" onclick="selectIntent('ranking_chart')">ranking_chart</button>
+
+        <button id="search_sports" class="btn search_sports" onclick="selectIntent('search_sports')">search_sports</button>
+        <button id="search_youtube" class="btn search_youtube" onclick="selectIntent('search_youtube')">search_youtube</button>
+        <button id="search_channel" class="btn search_channel" onclick="selectIntent('search_channel')">search_channel</button>
+        <button id="set_channel" class="btn set_channel" onclick="selectIntent('set_channel')">set_channel</button>
+        <button id="popular_channel" class="btn popular_channel" onclick="selectIntent('popular_channel')">popular_channel</button>
+
+        <button id="new_contents" class="btn new_contents" onclick="selectIntent('new_contents')">new_contents</button>
+        <button id="sort_recent" class="btn sort_recent" onclick="selectIntent('sort_recent')">sort_recent</button>
+        <button id="sort_popular" class="btn sort_popular" onclick="selectIntent('sort_popular')">sort_popular</button>
+        <button id="sort_star_rate" class="btn sort_star_rate" onclick="selectIntent('sort_star_rate')">sort_star_rate</button>
+
+        <button id="select_contents_number" class="btn select_contents_number" onclick="selectIntent('select_contents_number')">select_contents_number</button>
+        <button id="upcoming_release" class="btn upcoming_release" onclick="selectIntent('upcoming_release')">upcoming_release</button>
+        <button id="box_office_contents" class="btn box_office_contents" onclick="selectIntent('box_office_contents')">box_office_contents</button>
+
+        <button id="other_contents" class="btn other_contents" onclick="selectIntent('other_contents')">other_contents</button>
+        <button id="play_music" class="btn play_music" onclick="selectIntent('play_music')">play_music</button>
+        <button id="btv_functions" class="btn btv_functions" onclick="selectIntent('btv_functions')">btv_functions</button>
+        <button id="close_agent" class="btn close_agent" onclick="selectIntent('close_agent')">close_agent</button>
+        <button id="free_talk" class="btn free_talk" onclick="selectIntent('free_talk')">free_talk</button>
+        <button id="not_support" class="btn not_support" onclick="selectIntent('not_support')">not_support</button>
+    </div>
+
+    <h4>Named Entity</h4>
+    <div id="named-entity-buttons">
+        <button id="title" class="btn title" onclick="selectNamedEntity('title')">title</button>
+        <button id="program" class="btn program" onclick="selectNamedEntity('program')">program</button>
+        <button id="content_type" class="btn content_type" onclick="selectNamedEntity('content_type')">content_type</button>
+        <button id="genre" class="btn genre" onclick="selectNamedEntity('genre')">genre</button>
+        <button id="theme" class="btn theme" onclick="selectNamedEntity('theme')">theme</button>
+
+        <button id="people_name" class="btn people_name" onclick="selectNamedEntity('people_name')">people_name</button>
+        <button id="people_role" class="btn people_role" onclick="selectNamedEntity('people_role')">people_role</button>
+
+        <button id="channel" class="btn channel" onclick="selectNamedEntity('channel')">channel</button>
+        <button id="country" class="btn country" onclick="selectNamedEntity('country')">country</button>
+        <button id="time_expression" class="btn time_expression" onclick="selectNamedEntity('time_expression')">time_expression</button>
+
+        <button id="OTT_name" class="btn OTT_name" onclick="selectNamedEntity('OTT_name')">OTT_name</button>
+        <button id="season_order" class="btn season_order" onclick="selectNamedEntity('season_order')">season_order</button>
+        <button id="episode_order" class="btn episode_order" onclick="selectNamedEntity('episode_order')">episode_order</button>
+
+        <button id="sports_type" class="btn sports_type" onclick="selectNamedEntity('sports_type')">sports_type</button>
+        <button id="sports_team" class="btn sports_team" onclick="selectNamedEntity('sports_team')">sports_team</button>
+        <button id="sports_league" class="btn sports_league" onclick="selectNamedEntity('sports_league')">sports_league</button>
+
+        <button id="sort_type" class="btn sort_type" onclick="selectNamedEntity('sort_type')">sort_type</button>
+        <button id="star_rate" class="btn star_rate" onclick="selectNamedEntity('star_rate')">star_rate</button>
+        <button id="age_rating" class="btn age_rating" onclick="selectNamedEntity('age_rating')">age_rating</button>
+        <button id="day_of_week" class="btn day_of_week" onclick="selectNamedEntity('day_of_week')">day_of_week</button>
+        <button id="price" class="btn price" onclick="selectNamedEntity('price')">price</button>
+
+        <button id="running_time" class="btn running_time" onclick="selectNamedEntity('running_time')">running_time</button>
+        <button id="awards" class="btn awards" onclick="selectNamedEntity('awards')">awards</button>
+        <button id="attendance" class="btn attendance" onclick="selectNamedEntity('attendance')">attendance</button>
+
+        <button id="select_number" class="btn select_number" onclick="selectNamedEntity('select_number')">select_number</button>
+        <button id="btv_function_name" class="btn btv_function_name" onclick="selectNamedEntity('btv_function_name')">btv_function_name</button>
+        <button id="keywords" class="btn keywords" onclick="selectNamedEntity('keywords')">keywords</button>
+    </div>
+
+    <h4>Output</h4>
+    <textarea id="output-json" readonly onclick="enableJsonEdit()"></textarea>
+    <button class="action-btn" onclick="clearSelections()">CLEAR</button>
+
+    <script>
+        var selectedIntent = null;
+        var selectedNamedEntities = [];
+        var outputJson = {};
+
+        function selectIntent(intent) {
+            selectedIntent = intent;
+            updateOutputJson();
+            highlightSelectedButtons();
+        }
+
+        function selectNamedEntity(entity) {
+            var index = selectedNamedEntities.indexOf(entity);
+            if (index === -1) {
+                selectedNamedEntities.push(entity);
+            } else {
+                selectedNamedEntities.splice(index, 1);
+            }
+            updateOutputJson();
+            highlightSelectedButtons();
+        }
+
+        function updateOutputJson() {
+            outputJson = {};
+            if (selectedIntent) {
+                outputJson['intent'] = selectedIntent;
+            }
+            if (selectedNamedEntities.length > 0) {
+                var namedEntityObj = {};
+                selectedNamedEntities.forEach(function(entity, index) {
+                    namedEntityObj[entity] = [""];
+                });
+                outputJson['named_entity'] = namedEntityObj;
+            }
+            var jsonString = JSON.stringify(outputJson);
+            // Replace spaces around colons and commas to format as required
+            jsonString = jsonString.replace(/:\s*/g, ': ').replace(/,\s*/g, ', ');
+            document.getElementById('output-json').value = jsonString;
+        }
+
+        function highlightSelectedButtons() {
+            // Reset all button backgrounds
+            var allButtons = document.querySelectorAll('.btn');
+            allButtons.forEach(function(button) {
+                button.classList.remove('selected');
+            });
+
+            // Set background for selected intent button
+            if (selectedIntent) {
+                var intentButton = document.getElementById(selectedIntent);
+                intentButton.classList.add('selected');
+            }
+
+            // Set background for selected named entity buttons
+            selectedNamedEntities.forEach(function(entity) {
+                var namedEntityButton = document.getElementById(entity);
+                namedEntityButton.classList.add('selected');
+            });
+        }
+
+        function enableJsonEdit() {
+            var outputTextarea = document.getElementById('output-json');
+            outputTextarea.removeAttribute('readonly');
+            outputTextarea.focus();
+        }
+
+        function clearSelections() {
+            selectedIntent = null;
+            selectedNamedEntities = [];
+            updateOutputJson();
+            highlightSelectedButtons();
+        }
+    </script>
+</body>
+</html>
