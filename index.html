@@ -314,8 +314,25 @@ div id="named-entity-buttons">
             var outputTextarea = document.getElementById('output-json');
             outputTextarea.select();
             document.execCommand('copy');
-            alert('Copied to clipboard!');
+    
+            var copyMessage = document.createElement('div');
+            copyMessage.innerText = 'Copied to clipboard!';
+            copyMessage.style.position = 'fixed';
+            copyMessage.style.top = '50%';
+            copyMessage.style.left = '50%';
+            copyMessage.style.transform = 'translate(-50%, -50%)';
+            copyMessage.style.backgroundColor = '#000';
+            copyMessage.style.color = '#fff';
+            copyMessage.style.padding = '10px';
+            copyMessage.style.borderRadius = '5px';
+            copyMessage.style.zIndex = '1000';
+            document.body.appendChild(copyMessage);
+    
+            setTimeout(function() {
+                copyMessage.remove();
+            }, 2000); // 2초 후에 메시지 제거
         }
+        
     </script>
 </body>
 </html>
