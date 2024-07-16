@@ -141,6 +141,17 @@
             cursor: pointer;
             margin-left: 10px;
         }
+        
+        .copy-btn {
+            outline: 1px solid red;
+            background-color: #fff;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
@@ -221,6 +232,7 @@
 
     <h4>Output</h4>
     <textarea id="output-json" readonly onclick="enableJsonEdit()"></textarea>
+    <button class="copy-btn" onclick="copyToClipboard()">COPY</button>
     <button class="action-btn" onclick="clearSelections()">CLEAR</button>
 
     <script>
@@ -295,6 +307,30 @@
             updateOutputJson();
             highlightSelectedButtons();
         }
+
+        function copyToClipboard() {
+            var outputTextarea = document.getElementById('output-json');
+            outputTextarea.select();
+            document.execCommand('copy');
+            
+            var copyMessage = document.createElement('div');
+            copyMessage.innerText = 'Copied to clipboard!';
+            copyMessage.style.position = 'fixed';
+            copyMessage.style.top = '50%';
+            copyMessage.style.left = '50%';
+            copyMessage.style.transform = 'translate(-50%, -50%)';
+            copyMessage.style.backgroundColor = '#000';
+            copyMessage.style.color = '#fff';
+            copyMessage.style.padding = '10px';
+            copyMessage.style.borderRadius = '5px';
+            copyMessage.style.zIndex = '1000';
+            document.body.appendChild(copyMessage);
+            
+            setTimeout(function() {
+                copyMessage.remove();
+            }, 2000); // 2초 후에 메시지 제거
+        }
+        
     </script>
 </body>
 </html>
