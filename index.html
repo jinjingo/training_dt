@@ -141,6 +141,17 @@
             cursor: pointer;
             margin-left: 10px;
         }
+
+        .copy-btn {
+            outline: 2px solid red;
+            background-color: #fff;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
@@ -179,7 +190,9 @@
     </div>
 
     <h4>Named Entity</h4>
-    <div id="named-entity-buttons">
+    <
+
+div id="named-entity-buttons">
         <button id="title" class="btn title" onclick="selectNamedEntity('title')">title</button>
         <button id="program" class="btn program" onclick="selectNamedEntity('program')">program</button>
         <button id="content_type" class="btn content_type" onclick="selectNamedEntity('content_type')">content_type</button>
@@ -221,6 +234,7 @@
 
     <h4>Output</h4>
     <textarea id="output-json" readonly onclick="enableJsonEdit()"></textarea>
+    <button class="copy-btn" onclick="copyToClipboard()">COPY</button>
     <button class="action-btn" onclick="clearSelections()">CLEAR</button>
 
     <script>
@@ -294,6 +308,13 @@
             selectedNamedEntities = [];
             updateOutputJson();
             highlightSelectedButtons();
+        }
+
+        function copyToClipboard() {
+            var outputTextarea = document.getElementById('output-json');
+            outputTextarea.select();
+            document.execCommand('copy');
+            alert('Copied to clipboard!');
         }
     </script>
 </body>
