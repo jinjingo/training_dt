@@ -124,7 +124,7 @@
         textarea {
             width: 90%;
             height: 50px;
-            margin-top: 10px;
+            margin-top: 5px;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -151,6 +151,29 @@
             padding: 5px 10px;
             cursor: pointer;
             margin-left: 10px;
+        }
+        
+        .entity-input {
+            width: 60%;
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .entity-input input {
+            width: 60%;
+            margin-left: 10px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            flex: 1;
+        }
+        
+        #copy-message {
+            display: none;
+            color: green;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -198,139 +221,135 @@
         <button id="theme" class="btn theme" onclick="selectNamedEntity('theme')">theme</button>
         <button id="country" class="btn country" onclick="selectNamedEntity('country')">country</button>
         <button id="time_expression" class="btn time_expression" onclick="selectNamedEntity('time_expression')">time_expression</button>
-
         <button id="people_name" class="btn people_name" onclick="selectNamedEntity('people_name')">people_name</button>
         <button id="people_role" class="btn people_role" onclick="selectNamedEntity('people_role')">people_role</button>
-
         <button id="OTT_name" class="btn OTT_name" onclick="selectNamedEntity('OTT_name')">OTT_name</button>
         <button id="season_order" class="btn season_order" onclick="selectNamedEntity('season_order')">season_order</button>
         <button id="episode_order" class="btn episode_order" onclick="selectNamedEntity('episode_order')">episode_order</button>
-
         <button id="sports_type" class="btn sports_type" onclick="selectNamedEntity('sports_type')">sports_type</button>
         <button id="sports_team" class="btn sports_team" onclick="selectNamedEntity('sports_team')">sports_team</button>
         <button id="sports_league" class="btn sports_league" onclick="selectNamedEntity('sports_league')">sports_league</button>
         <button id="youtube_search_query" class="btn youtube_search_query" onclick="selectNamedEntity('youtube_search_query')">youtube_search_query</button>
         <button id="channel" class="btn channel" onclick="selectNamedEntity('channel')">channel</button>
-
         <button id="sort_type" class="btn sort_type" onclick="selectNamedEntity('sort_type')">sort_type</button>
         <button id="star_rate" class="btn star_rate" onclick="selectNamedEntity('star_rate')">star_rate</button>
         <button id="age_rating" class="btn age_rating" onclick="selectNamedEntity('age_rating')">age_rating</button>
         <button id="day_of_week" class="btn day_of_week" onclick="selectNamedEntity('day_of_week')">day_of_week</button>
         <button id="price" class="btn price" onclick="selectNamedEntity('price')">price</button>
-
         <button id="running_time" class="btn running_time" onclick="selectNamedEntity('running_time')">running_time</button>
-        <button id="awards" class="btn awards" onclick="selectNamedEntity('awards')">awards</button>
         <button id="attendance" class="btn attendance" onclick="selectNamedEntity('attendance')">attendance</button>
         <button id="theater_showing" class="btn theater_showing" onclick="selectNamedEntity('theater_showing')">theater_showing</button>
         <button id="is_original" class="btn is_original" onclick="selectNamedEntity('is_original')">is_original</button>
         <button id="is_concluded" class="btn is_concluded" onclick="selectNamedEntity('is_concluded')">is_concluded</button>
-
+        <button id="awards" class="btn awards" onclick="selectNamedEntity('awards')">awards</button>
         <button id="select_number" class="btn select_number" onclick="selectNamedEntity('select_number')">select_number</button>
         <button id="btv_function_name" class="btn btv_function_name" onclick="selectNamedEntity('btv_function_name')">btv_function_name</button>
         <button id="keywords" class="btn keywords" onclick="selectNamedEntity('keywords')">keywords</button>
     </div>
 
-    <h4>Output</h4>
-    <textarea id="output-json" readonly onclick="enableJsonEdit()"></textarea>
-    <button class="copy-btn" onclick="copyToClipboard()">COPY</button>
-    <button class="action-btn" onclick="clearSelections()">CLEAR</button>
+    <div id="named-entity-inputs"></div>
+
+    <h4>JSON Output</h4>
+    <textarea id="json-output"></textarea> <!-- readonly 속성 제거 -->
+    
+    <!-- JSON Output 버튼 컨테이너 추가 -->
+    <div id="output-buttons" style="display: flex; justify-content: flex-start; margin-top: 10px;">
+        <button class="copy-btn" onclick="copyToClipboard()">COPY</button>
+        <button class="action-btn" onclick="clearAll()">CLEAR</button>
+    </div>
+    <div id="copy-message">Copied to clipboard!</div>
+
 
     <script>
         var selectedIntent = null;
-        var selectedNamedEntities = [];
-        var outputJson = {};
+        var selectedEntities = [];
 
         function selectIntent(intent) {
-            selectedIntent = intent;
-            updateOutputJson();
-            highlightSelectedButtons();
+            if (selectedIntent === intent) {
+                selectedIntent = null;
+                document.getElementById(intent).classList.remove('selected');
+            } else {
+                if (selectedIntent) {
+                    document.getElementById(selectedIntent).classList.remove('selected');
+                }
+                selectedIntent = intent;
+                document.getElementById(intent).classList.add('selected');
+            }
+            updateJSONOutput();
         }
 
         function selectNamedEntity(entity) {
-            var index = selectedNamedEntities.indexOf(entity);
-            if (index === -1) {
-                selectedNamedEntities.push(entity);
+            var index = selectedEntities.indexOf(entity);
+            if (index > -1) {
+                selectedEntities.splice(index, 1);
+                document.getElementById(entity).classList.remove('selected');
+                document.getElementById('input-' + entity).remove();
             } else {
-                selectedNamedEntities.splice(index, 1);
+                selectedEntities.push(entity);
+                document.getElementById(entity).classList.add('selected');
+
+                var inputDiv = document.createElement('div');
+                inputDiv.id = 'input-' + entity;
+                inputDiv.classList.add('entity-input');
+                inputDiv.innerHTML = entity + ': <input type="text" id="input-value-' + entity + '" oninput="updateJSONOutput()">';
+                document.getElementById('named-entity-inputs').appendChild(inputDiv);
             }
-            updateOutputJson();
-            highlightSelectedButtons();
-        }
-
-        function updateOutputJson() {
-            outputJson = {};
-            if (selectedIntent) {
-                outputJson['intent'] = selectedIntent;
-            }
-            if (selectedNamedEntities.length > 0) {
-                var namedEntityObj = {};
-                selectedNamedEntities.forEach(function(entity, index) {
-                    namedEntityObj[entity] = [""];
-                });
-                outputJson['named_entity'] = namedEntityObj;
-            }
-            var jsonString = JSON.stringify(outputJson);
-            // Replace spaces around colons and commas to format as required
-            jsonString = jsonString.replace(/:\s*/g, ': ').replace(/,\s*/g, ', ');
-            document.getElementById('output-json').value = jsonString;
-        }
-
-        function highlightSelectedButtons() {
-            // Reset all button backgrounds
-            var allButtons = document.querySelectorAll('.btn');
-            allButtons.forEach(function(button) {
-                button.classList.remove('selected');
-            });
-
-            // Set background for selected intent button
-            if (selectedIntent) {
-                var intentButton = document.getElementById(selectedIntent);
-                intentButton.classList.add('selected');
-            }
-
-            // Set background for selected named entity buttons
-            selectedNamedEntities.forEach(function(entity) {
-                var namedEntityButton = document.getElementById(entity);
-                namedEntityButton.classList.add('selected');
-            });
-        }
-
-        function enableJsonEdit() {
-            var outputTextarea = document.getElementById('output-json');
-            outputTextarea.removeAttribute('readonly');
-            outputTextarea.focus();
-        }
-
-        function clearSelections() {
-            selectedIntent = null;
-            selectedNamedEntities = [];
-            updateOutputJson();
-            highlightSelectedButtons();
-        }
-
-        function copyToClipboard() {
-            var outputTextarea = document.getElementById('output-json');
-            outputTextarea.select();
-            document.execCommand('copy');
-            
-            var copyMessage = document.createElement('div');
-            copyMessage.innerText = 'Copied to clipboard!';
-            copyMessage.style.position = 'fixed';
-            copyMessage.style.top = '50%';
-            copyMessage.style.left = '50%';
-            copyMessage.style.transform = 'translate(-50%, -50%)';
-            copyMessage.style.backgroundColor = '#000';
-            copyMessage.style.color = '#fff';
-            copyMessage.style.padding = '10px';
-            copyMessage.style.borderRadius = '8px';
-            copyMessage.style.zIndex = '1000';
-            document.body.appendChild(copyMessage);
-            
-            setTimeout(function() {
-                copyMessage.remove();
-            }, 1000); // 2초 후에 메시지 제거
+            updateJSONOutput();
         }
         
+
+        function updateJSONOutput() {
+            var output = {};
+            if (selectedIntent) {
+                output.intent = selectedIntent;
+            }
+            if (selectedEntities.length > 0) {
+                output.named_entity = {};
+                selectedEntities.forEach(function(entity) {
+                    var value = document.getElementById('input-value-' + entity).value;
+                    output.named_entity[entity] = [value];
+                });
+            }
+            var jsonString = JSON.stringify(output);
+        
+            // 공백 적용: 콜론과 콤마 뒤에만 공백 추가
+            jsonString = jsonString
+                .replace(/:\[/g, ':[') // 콜론 뒤에 배열 여는 대괄호 앞에 공백 제거
+                .replace(/,\[/g, ',[') // 콤마 뒤에 배열 여는 대괄호 앞에 공백 제거
+                .replace(/(\{|\[|\]|\})/g, '$1') // 중괄호 및 대괄호 앞뒤 공백 제거
+                .replace(/:\s*/g, ': ') // 콜론 뒤에 공백 추가
+                .replace(/,\s*/g, ', '); // 콤마 뒤에 공백 추가
+        
+            document.getElementById('json-output').value = jsonString;
+        }
+
+
+        function copyToClipboard() {
+            var copyText = document.getElementById('json-output');
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            document.execCommand('copy');
+            showCopyMessage();
+        }
+
+        function showCopyMessage() {
+            var messageDiv = document.getElementById('copy-message');
+            messageDiv.style.display = 'block';
+            setTimeout(function() {
+                messageDiv.style.display = 'none';
+            }, 1000);
+        }
+
+        function clearAll() {
+            selectedIntent = null;
+            selectedEntities = [];
+            document.querySelectorAll('.btn').forEach(function(btn) {
+                btn.classList.remove('selected');
+            });
+            document.getElementById('named-entity-inputs').innerHTML = '';
+            document.getElementById('json-output').value = '';
+        }
     </script>
 </body>
 </html>
+
