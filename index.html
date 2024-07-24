@@ -175,6 +175,11 @@
             color: green;
             margin-top: 10px;
         }
+
+        #exclude-toggle.selected {
+            outline: 2px solid black; /* Black outline for selected state */
+        }
+
     </style>
 </head>
 <body>
@@ -212,7 +217,17 @@
         <button id="not_support" class="btn not_support" onclick="selectIntent('not_support')">not_support</button>
     </div>
 
+    <!-- Slide Toggle Button -->
     <h4>Named Entity</h4>
+    <div style="display: flex; align-items: center;">
+        <button id="exclude-toggle" class="btn" onclick="toggleExcludeNamedEntity()">Exclude Named Entity</button>
+    </div>
+    
+    <div id="named-entity-buttons">
+        <!-- Existing Named Entity buttons here -->
+    </div>
+
+
     <div id="named-entity-buttons">
         <button id="title" class="btn title" onclick="selectNamedEntity('title')">title</button>
         <button id="program" class="btn program" onclick="selectNamedEntity('program')">program</button>
@@ -263,7 +278,8 @@
     <script>
         var selectedIntent = null;
         var selectedEntities = [];
-
+        var includeExclude = false; // Track the toggle state
+        
         function selectIntent(intent) {
             if (selectedIntent === intent) {
                 selectedIntent = null;
@@ -277,7 +293,7 @@
             }
             updateJSONOutput();
         }
-
+        
         function selectNamedEntity(entity) {
             var index = selectedEntities.indexOf(entity);
             if (index > -1) {
@@ -287,7 +303,7 @@
             } else {
                 selectedEntities.push(entity);
                 document.getElementById(entity).classList.add('selected');
-
+        
                 var inputDiv = document.createElement('div');
                 inputDiv.id = 'input-' + entity;
                 inputDiv.classList.add('entity-input');
@@ -297,33 +313,51 @@
             updateJSONOutput();
         }
         
-
+        function toggleExcludeNamedEntity() {
+            var button = document.getElementById('exclude-toggle');
+            includeExclude = !includeExclude; // Toggle state
+        
+            if (includeExclude) {
+                button.classList.add('selected');
+            } else {
+                button.classList.remove('selected');
+            }
+            
+            updateJSONOutput(); // Update JSON output based on the new state
+        }
+        
         function updateJSONOutput() {
             var output = {};
             if (selectedIntent) {
                 output.intent = selectedIntent;
             }
+            
+            var key = includeExclude ? 'exclude_named_entity' : 'named_entity';
             if (selectedEntities.length > 0) {
-                output.named_entity = {};
+                output[key] = {};
                 selectedEntities.forEach(function(entity) {
-                    var value = document.getElementById('input-value-' + entity).value;
-                    output.named_entity[entity] = [value];
+                    var value = document.getElementById('input-value-' + entity)?.value || "";
+                    if (!output[key][entity]) {
+                        output[key][entity] = [value];
+                    } else {
+                        output[key][entity].push(value);
+                    }
                 });
             }
+            
             var jsonString = JSON.stringify(output);
-        
-            // 공백 적용: 콜론과 콤마 뒤에만 공백 추가
+            
+            // Apply formatting: add space only after colons and commas
             jsonString = jsonString
-                .replace(/:\[/g, ':[') // 콜론 뒤에 배열 여는 대괄호 앞에 공백 제거
-                .replace(/,\[/g, ',[') // 콤마 뒤에 배열 여는 대괄호 앞에 공백 제거
-                .replace(/(\{|\[|\]|\})/g, '$1') // 중괄호 및 대괄호 앞뒤 공백 제거
-                .replace(/:\s*/g, ': ') // 콜론 뒤에 공백 추가
-                .replace(/,\s*/g, ', '); // 콤마 뒤에 공백 추가
+                .replace(/:\[/g, ':[') // Remove space before array opening bracket after colon
+                .replace(/,\[/g, ',[') // Remove space before array opening bracket after comma
+                .replace(/(\{|\[|\]|\})/g, '$1') // Remove space around braces and brackets
+                .replace(/:\s*/g, ': ') // Add space after colon
+                .replace(/,\s*/g, ', '); // Add space after comma
         
             document.getElementById('json-output').value = jsonString;
         }
-
-
+        
         function copyToClipboard() {
             var copyText = document.getElementById('json-output');
             copyText.select();
@@ -331,7 +365,7 @@
             document.execCommand('copy');
             showCopyMessage();
         }
-
+        
         function showCopyMessage() {
             var messageDiv = document.getElementById('copy-message');
             messageDiv.style.display = 'block';
@@ -339,16 +373,19 @@
                 messageDiv.style.display = 'none';
             }, 1000);
         }
-
+        
         function clearAll() {
             selectedIntent = null;
             selectedEntities = [];
+            includeExclude = false;
             document.querySelectorAll('.btn').forEach(function(btn) {
                 btn.classList.remove('selected');
             });
             document.getElementById('named-entity-inputs').innerHTML = '';
             document.getElementById('json-output').value = '';
+            document.getElementById('exclude-toggle').classList.remove('selected');
         }
+
     </script>
 </body>
 </html>
