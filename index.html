@@ -9,16 +9,15 @@
         .btn {
             border: 1px solid #ccc;
             border-radius: 8px;
-            padding: 5px 10px;
+            padding: 5px 5px;
             margin: 5px;
             cursor: pointer;
         }
 
         .selected {
-            outline: 2px solid red; /* 빨간색 아웃라인 설정 */
+            outline: 2px solid red; 
         }
 
-        /* Intent 버튼 색상 설정 */
         #intent-buttons {
             display: flex;
             flex-wrap: wrap;
@@ -128,13 +127,34 @@
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            white-space: pre-wrap; /* Preserve formatting with line breaks */
-            font-family: 'Courier New', Courier, monospace; /* Monospace font for consistent spacing */
+            white-space: pre-wrap; 
+            font-family: 'Poppins', sans-serif, monospace; 
+        }
+
+
+       .btn {
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            padding: 5px 10px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            transform: scale(1.03);
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+            box-shadow: none;
         }
 
         .action-btn {
-            background-color: #ff0000; /* 빨간색 배경 */
-            color: #fff; /* 흰색 글자색 */
+            background-color: #ff0000; 
+            color: #fff; 
             border: none;
             border-radius: 5px;
             padding: 5px 10px;
@@ -147,10 +167,20 @@
             background-color: #fff;
             color: #000;
             border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
+            border-radius: 12px;
             cursor: pointer;
-            margin-left: 10px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .copy-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .copy-btn:active {
+            transform: scale(1.1);
+            box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.3);
         }
         
         .entity-input {
@@ -177,7 +207,7 @@
         }
 
         #exclude-toggle.selected {
-            outline: 2px solid black; /* Black outline for selected state */
+            outline: 2px solid #333; 
         }
 
     </style>
@@ -267,7 +297,7 @@
     <h4>JSON Output</h4>
     <textarea id="json-output"></textarea> <!-- readonly 속성 제거 -->
     
-    <!-- JSON Output 버튼 컨테이너 추가 -->
+    <!-- JSON Output 버튼 컨테이너 -->
     <div id="output-buttons" style="display: flex; justify-content: flex-start; margin-top: 10px;">
         <button class="copy-btn" onclick="copyToClipboard()">COPY</button>
         <button class="action-btn" onclick="clearAll()">CLEAR</button>
