@@ -16,9 +16,7 @@
         
         .selected {
             outline: 2px solid #7a6c6c; 
-            background-color: #d1d5db;
         }
-
 
 
         #intent-buttons {
@@ -67,7 +65,7 @@
             background-color: #c6dbe1;
         }
 
-        /* Named Entity 버튼 색상 설정 */
+        /* Named Entity 버튼 색상 */
         #named-entity-buttons {
             display: flex;
             flex-wrap: wrap;
@@ -146,12 +144,13 @@
         }
 
         .btn:hover {
-            transform: scale(1.02);
+            transform: scale(1.04);
             box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.15);
         }
 
         .btn:active {
-            transform: scale(0.98);
+            transform: scale(1.0);
+            background-color: #7a6c6c;
             box-shadow: none;
         }
 
@@ -159,10 +158,18 @@
             background-color: #ff0000; 
             color: #fff; 
             border: none;
-            border-radius: 5px;
-            padding: 5px 10px;
+            border-radius: 12px;
+            padding: 5px 5px;
             cursor: pointer;
             margin-left: 10px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-btn:hover {
+            transform: scale(1.03);
+            background-color: #7a6c6c;
+            color: white;
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
         }
         
         .copy-btn {
@@ -171,6 +178,7 @@
             color: #000;
             border: none;
             border-radius: 12px;
+            padding: 5px 5px;
             cursor: pointer;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
@@ -178,6 +186,8 @@
 
         .copy-btn:hover {
             transform: scale(1.03);
+            background-color: #7a6c6c;
+            color: white;
             box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
         }
 
@@ -185,12 +195,6 @@
             transform: scale(1.1);
             box-shadow: 6px 6px 15px rgba(0, 0, 0, 0.3);
         }
-
-
-        label, input, button {
-            font-size: 16px; /* 모든 라벨, 입력창, 버튼의 글자 크기를 16px로 통일 */
-        }
-
         
         .entity-input {
             width: 60%;
@@ -207,11 +211,21 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             flex: 1;
+            font-size: px;
+            font-family: 'Poppins', sans-serif; 
+        }
+        
+        .entity-input label {
+            font-size: 7px; 
+            font-family: 'Poppins', sans-serif; 
+            font-weight: bold;
+            margin-bottom: 10px;
         }
 
         #intent-buttons .btn:hover,
         #named-entity-buttons .btn:hover {
-            background-color: #d1d5db; /* 기존 색상보다 좀 더 회색이 섞인 색상 */
+            background-color: #7f7878;
+            color: white;
         }
 
         
@@ -264,14 +278,13 @@
         <button id="not_support" class="btn not_support" onclick="selectIntent('not_support')">not_support</button>
     </div>
 
-    <!-- Slide Toggle Button -->
+
     <h4>Named Entity</h4>
     <div style="display: flex; align-items: center;">
         <button id="exclude-toggle" class="btn" onclick="toggleExcludeNamedEntity()">Exclude Named Entity</button>
     </div>
     
     <div id="named-entity-buttons">
-        <!-- Existing Named Entity buttons here -->
     </div>
 
 
@@ -312,7 +325,7 @@
     <div id="named-entity-inputs"></div>
 
     <h4>JSON Output</h4>
-    <textarea id="json-output"></textarea> <!-- readonly 속성 제거 -->
+    <textarea id="json-output"></textarea>
     
     <!-- JSON Output 버튼 컨테이너 -->
     <div id="output-buttons" style="display: flex; justify-content: flex-start; margin-top: 10px;">
@@ -325,7 +338,7 @@
     <script>
         var selectedIntent = null;
         var selectedEntities = [];
-        var includeExclude = false; // Track the toggle state
+        var includeExclude = false;
         
         function selectIntent(intent) {
             if (selectedIntent === intent) {
@@ -370,7 +383,7 @@
                 button.classList.remove('selected');
             }
             
-            updateJSONOutput(); // Update JSON output based on the new state
+            updateJSONOutput();
         }
         
         function updateJSONOutput() {
