@@ -13,10 +13,13 @@
             margin: 5px;
             cursor: pointer;
         }
-
+        
         .selected {
-            outline: 2px solid red; 
+            outline: 2px solid #7a6c6c; 
+            background-color: #d1d5db;
         }
+
+
 
         #intent-buttons {
             display: flex;
@@ -143,8 +146,8 @@
         }
 
         .btn:hover {
-            transform: scale(1.03);
-            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2);
+            transform: scale(1.02);
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.15);
         }
 
         .btn:active {
@@ -199,6 +202,12 @@
             border-radius: 5px;
             flex: 1;
         }
+
+        #intent-buttons .btn:hover,
+        #named-entity-buttons .btn:hover {
+            background-color: #d1d5db; /* 기존 색상보다 좀 더 회색이 섞인 색상 */
+        }
+
         
         #copy-message {
             display: none;
@@ -209,6 +218,8 @@
         #exclude-toggle.selected {
             outline: 2px solid #333; 
         }
+
+        
 
     </style>
 </head>
@@ -419,4 +430,3 @@
     </script>
 </body>
 </html>
-
