@@ -18,7 +18,7 @@ named_entity_buttons = [
     "theme", "country", "OTT_name", "season_order", "episode_order", "time_expression",
     "day_of_week", "sort_type", "sports_type", "sports_team", "sports_league",
     "age_rating", "awards", "price", "attendance", "select_number", "running_time",
-    "btv_function_name", "keywords", "star_rate", "youtube_search_query", "is_concluded",
+    "btv_function_name", "keyword", "star_rate", "youtube_search_query", "is_concluded",
     "is_original", "theater_showing"
 ]
 
