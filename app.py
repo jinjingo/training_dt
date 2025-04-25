@@ -11,6 +11,8 @@ intent_buttons = [
     "not_support", "modify_search", "play_music", "search_sports", "set_channel",
     "popular_channel", "sort_recent", "sort_popular", "sort_star_rate", "other_contents",
     "upcoming_release", "free_talk"
+    "recommend_prefer_vod", "recommend_freq_vod", "recommend_prefer_ch", 
+    "my_watch_vod", "my_rent_vod", "my_own_vod", "my_like_vod", "my_like_ch", "my_reserve_ch"
 ]
 
 named_entity_buttons = [
