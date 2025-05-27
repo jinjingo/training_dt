@@ -10,7 +10,7 @@ intent_buttons = [
     "close_agent", "box_office_contents", "search_channel", "select_contents_number",
     "not_support", "modify_search", "play_music", "search_sports", "set_channel",
     "popular_channel", "sort_recent", "sort_popular", "sort_star_rate", "other_contents",
-    "upcoming_release", "free_talk", "search_review"
+    "upcoming_release", "free_talk", "search_review", "change_profile",
     "recommend_prefer_vod", "recommend_freq_vod", "recommend_prefer_channel", 
     "my_watch_vod", "my_rent_vod", "my_own_vod", "my_like_vod", "my_like_channel", "my_reserve_channel"
 ]
